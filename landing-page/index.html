@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>CRUISER Speed Test — Is jou WiFi regtig so swak?</title>
+<meta name="description" content="Free LTE speed test. Prove it to your ISP. No download, no signup, 10 seconds.">
+
+<!--
+  META PIXEL PLACEHOLDER
+  No Pixel ID was found on business.cttx.co.za, so tracking is stubbed out below.
+  When you have a Pixel ID, paste the standard Meta base code here, e.g.:
+
+  <script>
+  !function(f,b,e,v,n,t,s){...}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'YOUR_PIXEL_ID');
+  fbq('track', 'PageView');
+  </script>
+
+  The trackEvent() function in the script below already calls fbq('track', 'CruiserCTA')
+  automatically if window.fbq exists, so no other code changes are needed once the
+  pixel is added.
+-->
+
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --green: #00C853;
+    --grey: #9A9A9A;
+    --whatsapp: #25D366;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 140px; /* room for fixed CTA */
+  }
+
+  header {
+    text-align: center;
+    padding: 28px 20px 16px;
+    max-width: 480px;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+  header p {
+    margin: 0;
+    color: var(--grey);
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  main {
+    width: 100%;
+    max-width: 480px;
+    padding: 8px 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 478 / 850;
+    /* Never let the video grow tall enough to sit under the fixed CTA:
+       reserve ~110px header + ~130px CTA/gap + safe-area. */
+    max-height: calc(100svh - 240px - env(safe-area-inset-bottom));
+    max-width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sound-hint {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .sound-hint.hidden { opacity: 0; }
+
+  .below {
+    max-width: 480px;
+    width: 100%;
+    padding: 18px 20px 4px;
+    text-align: center;
+  }
+  .below p {
+    color: var(--grey);
+    font-size: 0.9rem;
+    margin: 0 0 16px;
+  }
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--whatsapp);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    border-radius: 999px;
+  }
+  .whatsapp-btn svg { width: 18px; height: 18px; fill: #fff; }
+
+  /* Floating CTA */
+  .cta {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    min-height: 60px;
+    background: var(--green);
+    color: #fff;
+    border-radius: 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    text-align: center;
+    z-index: 50;
+    animation: pulseGlow 2.2s ease-in-out infinite;
+  }
+  .cta-main {
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+  }
+  .cta-sub {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.72rem;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  @keyframes pulseGlow {
+    0%   { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.55); }
+    70%  { box-shadow: 0 0 0 16px rgba(0, 200, 83, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0); }
+  }
+
+  @media (min-width: 540px) {
+    .cta { max-width: 480px; left: 50%; transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Is jou WiFi regtig so swak?</h1>
+  <p>Free speed test. Prove it to your ISP. Share the proof.</p>
+</header>
+
+<main>
+  <div class="video-wrap">
+    <video id="demoVideo" src="cruiser-demo.mp4" poster="poster.jpg" autoplay muted loop playsinline preload="auto"></video>
+    <div class="sound-hint" id="soundHint">🔇 Tap for sound</div>
+  </div>
+</main>
+
+<section class="below">
+  <p>Used by farmers, lodges, and reserves across South Africa.</p>
+  <a class="whatsapp-btn" id="waShareBtn"
+     href="https://wa.me/?text=Test%20your%20internet%20speed%20for%20free%20%E2%80%94%20takes%2010%20seconds%3A%20https%3A%2F%2Fcruiser-sa.gerhardcttx.workers.dev"
+     target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2c-5.523 0-10 4.477-10 10 0 1.765.46 3.483 1.334 5L2 22l5.15-1.312A9.958 9.958 0 0012.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18a7.94 7.94 0 01-4.05-1.11l-.29-.172-3.06.78.82-2.98-.19-.307A7.95 7.95 0 014 12c0-4.411 3.589-8 8.004-8 4.412 0 7.996 3.589 7.996 8s-3.584 8-7.996 8z"/></svg>
+    Share on WhatsApp
+  </a>
+</section>
+
+<a class="cta" id="ctaBtn" href="https://cruiser-sa.gerhardcttx.workers.dev" target="_blank" rel="noopener">
+  <span class="cta-main">TEST YOUR SPEED — FREE</span>
+  <span class="cta-sub">No download. No signup. 10 seconds.</span>
+</a>
+
+<script>
+  function trackEvent(name) {
+    if (window.fbq) { fbq('track', name); }
+    console.log('[track]', name);
+  }
+
+  var video = document.getElementById('demoVideo');
+  var soundHint = document.getElementById('soundHint');
+
+  video.addEventListener('click', function () {
+    video.muted = !video.muted;
+    soundHint.textContent = video.muted ? '🔇 Tap for sound' : '🔊 Sound on';
+    soundHint.classList.toggle('hidden', !video.muted);
+  });
+
+  document.getElementById('ctaBtn').addEventListener('click', function () {
+    trackEvent('CruiserCTA');
+  });
+  document.getElementById('waShareBtn').addEventListener('click', function () {
+    trackEvent('CruiserWhatsAppShare');
+  });
+</script>
+
+</body>
+</html>
